@@ -18,6 +18,10 @@ export default {
     size: {
       type: String,
       default: '',
+    },
+    disabled:{
+      type:Boolean,
+      default: false
     }
   },
   computed: {
@@ -25,12 +29,14 @@ export default {
       return {
         [`wp-button--${this.type}`]: true,
         [`wp-button--${this.size}`]: Boolean(this.size),
-        'is-round': this.round
+        'is-round': this.round,
+        'is-disabled': this.disabled
       };
     }
   },
   methods: {
     onClick() {
+      if(this.disabled)return;
       this.$emit('click');
     }
   }
@@ -78,5 +84,11 @@ export default {
 }
 .is-round {
   border-radius: 20px;
+}
+
+.is-disabled{
+  color: #c0c4cc;
+  border-color: #ebeef5;
+  cursor: not-allowed;
 }
 </style>

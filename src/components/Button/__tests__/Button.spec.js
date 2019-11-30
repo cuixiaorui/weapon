@@ -1,6 +1,15 @@
 import Button from "../Button.vue";
 import { shallowMount } from "@vue/test-utils";
 const classNamePrefix = "wp-button";
+const expectExistClass = function(key, val, className) {
+  const wrapper = shallowMount(Button, {
+    propsData: {
+      [key]: val
+    }
+  });
+
+  expect(wrapper.classes(className)).toBe(true);
+};
 
 describe("Button", () => {
   it("快照", () => {
@@ -25,16 +34,6 @@ describe("Button", () => {
   });
 
   describe("props", () => {
-    const expectExistClass = function(key, val) {
-      const wrapper = shallowMount(Button, {
-        propsData: {
-          [key]: val
-        }
-      });
-
-      const className = `${classNamePrefix}--${val}`;
-      expect(wrapper.classes(className)).toBe(true);
-    };
     describe("type 控制按钮得类型", () => {
       const expectType = expectExistClass.bind(null, "type");
       it("default", () => {
@@ -44,35 +43,44 @@ describe("Button", () => {
       });
 
       it("success", () => {
-        expectType("success");
+        expectType("success", `${classNamePrefix}--success`);
       });
       it("error", () => {
-        expectType("error");
+        expectType("error", `${classNamePrefix}--error`);
       });
     });
 
     describe("size 控制按钮得大小", () => {
       const expectSize = expectExistClass.bind(null, "size");
       it("mini 超小", () => {
-        expectSize("mini");
+        expectSize("mini", `${classNamePrefix}--mini`);
       });
       it("small 小", () => {
-        expectSize("small");
+        expectSize("small", `${classNamePrefix}--small`);
       });
       it("medium 中等", () => {
-        expectSize("medium");
+        expectSize("medium", `${classNamePrefix}--medium`);
       });
     });
 
     it("控制显示是否为圆角", () => {
-      const wrapper = shallowMount(Button, {
-        propsData: {
-          round: true
-        }
+      expectExistClass("round", true, `is-round`);
+    });
+
+    describe("disabled 禁用", () => {
+      it("开启禁用后，会有 is-disabled 类名存在", () => {
+        expectExistClass("disabled", true, `is-disabled`);
       });
 
-      const className = `is-round`;
-      expect(wrapper.classes(className)).toBe(true);
+      it("点击不会 emit click 事件", () => {
+        const wrapper = shallowMount(Button, {
+          propsData: {
+            disabled: true
+          }
+        });
+        wrapper.trigger("click");
+        expect(wrapper.emitted("click")).toBeFalsy();
+      });
     });
   });
   describe("events", () => {
