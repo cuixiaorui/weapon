@@ -1,5 +1,5 @@
 <template>
-  <button class="wp-button" :class="classList">
+  <button class="wp-button" :class="classList" @click="onClick">
     <slot></slot>
   </button>
 </template>
@@ -10,13 +10,23 @@ export default {
     type: {
       type: String,
       default: 'default'
+    },
+    round: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
     classList() {
       return {
-        [`wp-button--${this.type}`]: true
+        [`wp-button--${this.type}`]: true,
+        'is-round': this.round
       };
+    }
+  },
+  methods: {
+    onClick() {
+      this.$emit('click');
     }
   }
 };
@@ -42,5 +52,8 @@ export default {
     background-color: #67c23a;
     border-color: #67c23a;
   }
+}
+.is-round {
+  border-radius: 20px;
 }
 </style>

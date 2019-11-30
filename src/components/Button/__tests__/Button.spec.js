@@ -44,5 +44,23 @@ describe("Button", () => {
         expectButtonType("error");
       });
     });
+
+    it("控制显示是否为圆角", () => {
+      const wrapper = shallowMount(Button, {
+        propsData: {
+          round: true
+        }
+      });
+
+      const className = `is-round`;
+      expect(wrapper.classes(className)).toBe(true);
+    });
+  });
+  describe("events", () => {
+    it("点击后应该 emit “click” 事件", () => {
+      const wrapper = shallowMount(Button);
+      wrapper.trigger("click");
+      expect(wrapper.emitted("click")).toBeTruthy();
+    });
   });
 });

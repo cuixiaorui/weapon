@@ -1,25 +1,31 @@
 <template>
   <div id="app">
     <div>
-      <Button>你好</Button>
+      <Button @click="onclick">你好</Button>
+      <Button round>圆形</Button>
     </div>
   </div>
 </template>
 
 <script>
-import Button from "./components/Button/Button.vue";
+import Button from './components/Button/Button.vue';
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
-   Button 
+    Button
+  },
+  methods: {
+    onclick() {
+      console.log('click');
+    }
   }
 };
 </script>
 
 <style lang="scss">
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
