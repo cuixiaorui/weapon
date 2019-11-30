@@ -18,9 +18,6 @@ export default {
     size: {
       type: String,
       default: '',
-      validator(val){
-        return ['medium','small','mini'].includes(val)
-      }
     }
   },
   computed: {

@@ -9,7 +9,8 @@
 
 ## 开发日志
 ### button
-#### TODO
-1. css 样式
-2. 支持 size
-3. 支持圆角
+#### done
+1. size
+2. type
+3. round
+4. click
