@@ -14,12 +14,20 @@ export default {
     round: {
       type: Boolean,
       default: false
+    },
+    size: {
+      type: String,
+      default: '',
+      validator(val){
+        return ['medium','small','mini'].includes(val)
+      }
     }
   },
   computed: {
     classList() {
       return {
         [`wp-button--${this.type}`]: true,
+        [`wp-button--${this.size}`]: Boolean(this.size),
         'is-round': this.round
       };
     }
@@ -51,6 +59,24 @@ export default {
   &--success {
     background-color: #67c23a;
     border-color: #67c23a;
+  }
+
+  &--medium{
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+
+  &--small{
+    padding: 9px 15px;
+    font-size: 12px;
+    border-radius: 3px;
+  }
+
+  &--mini{
+    padding: 7px 15px;
+    font-size: 12px;
+    border-radius: 3px;
   }
 }
 .is-round {

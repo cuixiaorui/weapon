@@ -1,7 +1,13 @@
 import Button from "../Button.vue";
 import { shallowMount } from "@vue/test-utils";
 const classNamePrefix = "wp-button";
+
 describe("Button", () => {
+  it("快照", () => {
+    const wrapper = shallowMount(Button);
+    expect(wrapper).toMatchSnapshot();
+  });
+
   it("应该有类名为 wp-button 得 div", () => {
     const wrapper = shallowMount(Button);
     const result = wrapper.contains(".wp-button");
@@ -19,18 +25,18 @@ describe("Button", () => {
   });
 
   describe("props", () => {
+    const expectExistClass = function(key, val) {
+      const wrapper = shallowMount(Button, {
+        propsData: {
+          [key]: val
+        }
+      });
+
+      const className = `${classNamePrefix}--${val}`;
+      expect(wrapper.classes(className)).toBe(true);
+    };
     describe("type 控制按钮得类型", () => {
-      const expectButtonType = function(type) {
-        const wrapper = shallowMount(Button, {
-          propsData: {
-            type
-          }
-        });
-
-        const className = `${classNamePrefix}--${type}`;
-        expect(wrapper.classes(className)).toBe(true);
-      };
-
+      const expectType = expectExistClass.bind(null, "type");
       it("default", () => {
         const wrapper = shallowMount(Button, {});
         const className = `${classNamePrefix}--default`;
@@ -38,10 +44,23 @@ describe("Button", () => {
       });
 
       it("success", () => {
-        expectButtonType("success");
+        expectType("success");
       });
       it("error", () => {
-        expectButtonType("error");
+        expectType("error");
+      });
+    });
+
+    describe("size 控制按钮得大小", () => {
+      const expectSize = expectExistClass.bind(null, "size");
+      it("mini 超小", () => {
+        expectSize("mini");
+      });
+      it("small 小", () => {
+        expectSize("small");
+      });
+      it("medium 中等", () => {
+        expectSize("medium");
       });
     });
 
