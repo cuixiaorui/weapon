@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button 快照 1`] = `<button class="wp-button wp-button--default"></button>`;
