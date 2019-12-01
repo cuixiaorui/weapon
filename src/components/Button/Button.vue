@@ -17,10 +17,10 @@ export default {
     },
     size: {
       type: String,
-      default: '',
+      default: ''
     },
-    disabled:{
-      type:Boolean,
+    disabled: {
+      type: Boolean,
       default: false
     }
   },
@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     onClick() {
-      if(this.disabled)return;
+      if (this.disabled) return;
       this.$emit('click');
     }
   }
@@ -44,6 +44,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$errorColor: #f56c6c;
+$successColor: #67c23a;
+
 .wp-button {
   padding: 12px 20px;
   outline: none;
@@ -52,31 +55,41 @@ export default {
   &--default {
     background: #fff;
     border: 1px solid #dcdfe6;
+
+    &:hover {
+      background-color: pink;
+    }
   }
 
   &--error {
-    background-color: #f56c6c;
-    border-color: #f56c6c;
+    background-color: $errorColor;
+    border-color: $errorColor;
+    &:hover {
+      background-color: lighten($errorColor, 5%);
+    }
   }
 
   &--success {
-    background-color: #67c23a;
-    border-color: #67c23a;
+    background-color: $successColor;
+    border-color: $successColor;
+    &:hover {
+      background-color: lighten($successColor, 5%);
+    }
   }
 
-  &--medium{
+  &--medium {
     padding: 10px 20px;
     font-size: 14px;
     border-radius: 4px;
   }
 
-  &--small{
+  &--small {
     padding: 9px 15px;
     font-size: 12px;
     border-radius: 3px;
   }
 
-  &--mini{
+  &--mini {
     padding: 7px 15px;
     font-size: 12px;
     border-radius: 3px;
@@ -86,9 +99,12 @@ export default {
   border-radius: 20px;
 }
 
-.is-disabled{
+.is-disabled {
   color: #c0c4cc;
   border-color: #ebeef5;
   cursor: not-allowed;
+  &:hover {
+    background-color: #fff;
+  }
 }
 </style>

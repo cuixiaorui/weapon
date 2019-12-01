@@ -5,6 +5,7 @@
 
 ### css
 1. 命名使用 BEM // .block__elem--mod
+2. scss
 
 
 ## 开发日志
