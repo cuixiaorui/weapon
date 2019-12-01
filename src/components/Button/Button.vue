@@ -49,6 +49,7 @@ $successColor: #67c23a;
 
 .wp-button {
   padding: 12px 20px;
+  border-radius: 4px;
   outline: none;
   cursor: pointer;
 
@@ -57,7 +58,10 @@ $successColor: #67c23a;
     border: 1px solid #dcdfe6;
 
     &:hover {
-      background-color: pink;
+      background-color: rgb(236, 245, 266);
+    }
+    &:active {
+      border: 1px solid blue;
     }
   }
 
@@ -105,6 +109,10 @@ $successColor: #67c23a;
   cursor: not-allowed;
   &:hover {
     background-color: #fff;
+  }
+
+  &:active {
+    border: 1px solid #ebeef5;
   }
 }
 </style>
