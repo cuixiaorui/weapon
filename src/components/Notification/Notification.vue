@@ -37,8 +37,24 @@ export default {
   },
   methods: {
     onCloseHandler() {
+
         this.onClose();
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.wp-notification{
+    position: fixed;
+    right: 10px;
+    top: 50px;
+    width: 330px;
+    padding: 14px 26px 14px 13px;
+    border-radius: 8px;
+    border: 1px solid #ebeef5;
+    background-color:#fff;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    overflow: hidden; 
+}
+</style>

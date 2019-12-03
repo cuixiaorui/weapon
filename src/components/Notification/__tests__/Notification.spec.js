@@ -1,4 +1,5 @@
 import Notification from "../Notification.vue";
+import { notify } from "../index";
 import { shallowMount } from "@vue/test-utils";
 
 describe("Notification", () => {
@@ -55,5 +56,11 @@ describe("Notification", () => {
       wrapper.find(btnSelector).trigger("click");
       expect(onClose).toBeCalledTimes(1);
     });
+  });
+
+  it("notify() 调用后会把 notification 添加到 body 内", () => {
+    notify();
+    const body = document.querySelector("body");
+    expect(body.querySelector(".wp-notification")).toBeTruthy();
   });
 });
