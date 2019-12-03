@@ -1,6 +1,6 @@
 import Notification from "../Notification.vue";
 import { notify } from "../index";
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount, createWrapper } from "@vue/test-utils";
 
 describe("Notification", () => {
   it("应该有类名为 wp-notification 得 div", () => {
@@ -58,9 +58,18 @@ describe("Notification", () => {
     });
   });
 
-  it("notify() 调用后会把 notification 添加到 body 内", () => {
-    notify();
-    const body = document.querySelector("body");
-    expect(body.querySelector(".wp-notification")).toBeTruthy();
+  describe("notify()", () => {
+    it("调用后会把 notification 添加到 body 内", () => {
+      notify();
+      const body = document.querySelector("body");
+      expect(body.querySelector(".wp-notification")).toBeTruthy();
+    });
+
+    it("设置 title ", () => {
+      const notification = notify({ title: "test" });
+      const wrapper = createWrapper(notification);
+      const titleContainer = wrapper.find(".wp-notification__title");
+      expect(titleContainer.text()).toBe("test");
+    });
   });
 });
