@@ -65,11 +65,28 @@ describe("Notification", () => {
       expect(body.querySelector(".wp-notification")).toBeTruthy();
     });
 
+    function wrapNotify(options) {
+      const notification = notify(options);
+      return createWrapper(notification);
+    }
+
     it("设置 title ", () => {
-      const notification = notify({ title: "test" });
-      const wrapper = createWrapper(notification);
+      const wrapper = wrapNotify({ title: "test" });
       const titleContainer = wrapper.find(".wp-notification__title");
       expect(titleContainer.text()).toBe("test");
+    });
+
+    it("设置 message ", () => {
+      const message = "this is a message";
+      const wrapper = wrapNotify({ message });
+      const titleContainer = wrapper.find(".wp-notification__message");
+      expect(titleContainer.text()).toBe(message);
+    });
+
+    it("设置 showClose", () => {
+      const wrapper = wrapNotify({ showClose: false });
+      const btnSelector = ".wp-notification__close-button";
+      expect(wrapper.contains(btnSelector)).toBe(false);
     });
   });
 });
