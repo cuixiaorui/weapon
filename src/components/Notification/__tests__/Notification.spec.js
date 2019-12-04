@@ -88,5 +88,13 @@ describe("Notification", () => {
       const btnSelector = ".wp-notification__close-button";
       expect(wrapper.contains(btnSelector)).toBe(false);
     });
+
+    it("should onClose --> 关闭时的回调函数,关闭后应该调用回调函数", () => {
+      const onClose = jest.fn();
+      const wrapper = wrapNotify({ onClose });
+      const btnSelector = ".wp-notification__close-button";
+      wrapper.find(btnSelector).trigger("click");
+      expect(onClose).toBeCalledTimes(1);
+    });
   });
 });
