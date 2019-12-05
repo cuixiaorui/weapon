@@ -89,12 +89,20 @@ describe("Notification", () => {
       expect(wrapper.contains(btnSelector)).toBe(false);
     });
 
-    it("should onClose --> 关闭时的回调函数,关闭后应该调用回调函数", () => {
+    it("onClose --> 关闭时的回调函数,关闭后应该调用回调函数", () => {
       const onClose = jest.fn();
       const wrapper = wrapNotify({ onClose });
       const btnSelector = ".wp-notification__close-button";
       wrapper.find(btnSelector).trigger("click");
       expect(onClose).toBeCalledTimes(1);
+    });
+
+    it("onClick --> 点击 Notification 时的回调函数,点击 Notification 应该触发回调函数", () => {
+      const onClick = jest.fn();
+      const wrapper = wrapNotify({ onClick });
+      const selector = ".wp-notification";
+      wrapper.find(selector).trigger("click");
+      expect(onClick).toBeCalledTimes(1);
     });
   });
 });

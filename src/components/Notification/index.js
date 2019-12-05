@@ -4,18 +4,8 @@ import Vue from "vue";
 export function notify(options = {}) {
   const container = createContainerAndAppendToView();
   const notification = createNotification(container);
-  updateProps(notification, mergeOptions(options));
+  updateProps(notification, options);
   return notification;
-}
-
-function mergeOptions(options) {
-  return Object.assign({}, createDefaultOptions(), options);
-}
-
-function createDefaultOptions() {
-  return {
-    showClose: true
-  };
 }
 
 function createContainerAndAppendToView() {
@@ -31,10 +21,13 @@ function createNotification(el) {
 }
 
 function updateProps(notification, options) {
-  setProp(notification, "title", options.title);
-  setProp(notification, "message", options.message);
-  setProp(notification, "showClose", options.showClose);
-  setProp(notification, "onClose", options.onClose);
+  const props = ["title", "message", "showClose", "onClose", "onClick"];
+  props.forEach(key => {
+    const hasKey = key in options;
+    if (hasKey) {
+      setProp(notification, key, options[key]);
+    }
+  });
 }
 
 function setProp(notification, key, val) {
