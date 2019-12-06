@@ -36,13 +36,14 @@ function updateProps(notification, options) {
     }
   });
 
-  setDuration(options, notification);
+  setDuration(notification.duration, notification);
 }
 
-function setDuration(options, notification) {
+function setDuration(duration, notification) {
+  if (duration === 0) return;
   setTimeout(() => {
     deleteNotification(notification);
-  }, options.duration);
+  }, duration);
 }
 
 function deleteNotification(notification) {

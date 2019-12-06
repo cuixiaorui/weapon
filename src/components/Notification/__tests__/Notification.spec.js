@@ -108,13 +108,22 @@ describe("Notification", () => {
     });
 
     describe("duration	显示时间", () => {
-      it("should 大于 0 时，到时间自动关闭", () => {
-        const duration = 1000;
+      let body;
+      function handleDuration(duration) {
         wrapNotify({ duration });
-        const body = document.querySelector("body");
+        body = document.querySelector("body");
         expect(body.querySelector(".wp-notification")).toBeTruthy();
-        jest.advanceTimersByTime(duration);
+        jest.runAllTimers();
+      }
+
+      it("大于 0 时，到时间自动关闭", () => {
+        handleDuration(1000);
         expect(body.querySelector(".wp-notification")).toBeFalsy();
+      });
+
+      it("等于 0 时，不会自动关闭", () => {
+        handleDuration(0);
+        expect(body.querySelector(".wp-notification")).toBeTruthy();
       });
     });
   });
