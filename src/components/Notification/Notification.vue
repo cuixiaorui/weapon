@@ -18,6 +18,10 @@
 <script>
 export default {
   props: {
+    duration: {
+      type:Number,
+      default: 4.5
+    },
     title: {
       type: String,
       default: ''

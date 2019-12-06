@@ -21,13 +21,36 @@ function createNotification(el) {
 }
 
 function updateProps(notification, options) {
-  const props = ["title", "message", "showClose", "onClose", "onClick"];
+  const props = [
+    "title",
+    "message",
+    "showClose",
+    "onClose",
+    "onClick",
+    "duration"
+  ];
   props.forEach(key => {
     const hasKey = key in options;
     if (hasKey) {
       setProp(notification, key, options[key]);
     }
   });
+
+  setDuration(options, notification);
+}
+
+function setDuration(options, notification) {
+  setTimeout(() => {
+    deleteNotification(notification);
+  }, options.duration * 1000);
+}
+
+function deleteNotification(notification) {
+  const parent = notification.$el.parentNode;
+  if (parent) {
+    parent.removeChild(notification.$el);
+  }
+  notification.$destroy();
 }
 
 function setProp(notification, key, val) {

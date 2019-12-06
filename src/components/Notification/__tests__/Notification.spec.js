@@ -2,6 +2,8 @@ import Notification from "../Notification.vue";
 import { notify } from "../index";
 import { shallowMount, createWrapper } from "@vue/test-utils";
 
+jest.useFakeTimers();
+
 describe("Notification", () => {
   it("应该有类名为 wp-notification 得 div", () => {
     const wrapper = shallowMount(Notification);
@@ -103,6 +105,16 @@ describe("Notification", () => {
       const selector = ".wp-notification";
       wrapper.find(selector).trigger("click");
       expect(onClick).toBeCalledTimes(1);
+    });
+
+    describe("duration	显示时间, 毫秒。设为 0 则不会自动关闭", () => {
+      it("should 大于 0 秒时，到时间自动关闭", () => {
+        wrapNotify({ duration: 1 });
+        const body = document.querySelector("body");
+        expect(body.querySelector(".wp-notification")).toBeTruthy();
+        jest.advanceTimersByTime(1000);
+        expect(body.querySelector(".wp-notification")).toBeFalsy();
+      });
     });
   });
 });
