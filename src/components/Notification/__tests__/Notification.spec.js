@@ -107,12 +107,13 @@ describe("Notification", () => {
       expect(onClick).toBeCalledTimes(1);
     });
 
-    describe("duration	显示时间, 毫秒。设为 0 则不会自动关闭", () => {
-      it("should 大于 0 秒时，到时间自动关闭", () => {
-        wrapNotify({ duration: 1 });
+    describe("duration	显示时间", () => {
+      it("should 大于 0 时，到时间自动关闭", () => {
+        const duration = 1000;
+        wrapNotify({ duration });
         const body = document.querySelector("body");
         expect(body.querySelector(".wp-notification")).toBeTruthy();
-        jest.advanceTimersByTime(1000);
+        jest.advanceTimersByTime(duration);
         expect(body.querySelector(".wp-notification")).toBeFalsy();
       });
     });

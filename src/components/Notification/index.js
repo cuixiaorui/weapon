@@ -42,7 +42,7 @@ function updateProps(notification, options) {
 function setDuration(options, notification) {
   setTimeout(() => {
     deleteNotification(notification);
-  }, options.duration * 1000);
+  }, options.duration);
 }
 
 function deleteNotification(notification) {

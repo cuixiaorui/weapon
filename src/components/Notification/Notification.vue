@@ -20,7 +20,7 @@ export default {
   props: {
     duration: {
       type:Number,
-      default: 4.5
+      default: 4500
     },
     title: {
       type: String,
