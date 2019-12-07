@@ -42,6 +42,7 @@ function updateProps(notification, options) {
 function setDuration(duration, notification) {
   if (duration === 0) return;
   setTimeout(() => {
+    notification.onClose();
     deleteNotification(notification);
   }, duration);
 }

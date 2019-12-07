@@ -91,12 +91,21 @@ describe("Notification", () => {
       expect(wrapper.contains(btnSelector)).toBe(false);
     });
 
-    it("onClose --> 关闭时的回调函数,关闭后应该调用回调函数", () => {
-      const onClose = jest.fn();
-      const wrapper = wrapNotify({ onClose });
-      const btnSelector = ".wp-notification__close-button";
-      wrapper.find(btnSelector).trigger("click");
-      expect(onClose).toBeCalledTimes(1);
+    describe("onClose --> 关闭时的回调函数,关闭后应该调用回调函数", () => {
+      it("点击关闭按钮时调用 onClose", () => {
+        const onClose = jest.fn();
+        const wrapper = wrapNotify({ onClose });
+        const btnSelector = ".wp-notification__close-button";
+        wrapper.find(btnSelector).trigger("click");
+        expect(onClose).toBeCalledTimes(1);
+      });
+
+      it("通过设置 duration 关闭时也会调用 onClose", () => {
+        const onClose = jest.fn();
+        wrapNotify({ onClose, duration: 1000 });
+        jest.runAllTimers();
+        expect(onClose).toBeCalledTimes(1);
+      });
     });
 
     it("onClick --> 点击 Notification 时的回调函数,点击 Notification 应该触发回调函数", () => {
@@ -107,7 +116,7 @@ describe("Notification", () => {
       expect(onClick).toBeCalledTimes(1);
     });
 
-    describe("duration	显示时间", () => {
+    describe("duration	延迟关闭的时间", () => {
       let body;
       function handleDuration(duration) {
         wrapNotify({ duration });
