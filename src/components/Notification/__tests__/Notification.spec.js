@@ -1,10 +1,14 @@
 import Notification from "../Notification.vue";
-import { notify } from "../index";
+import { notify, __RewireAPI__ as Main } from "../index";
 import { shallowMount, createWrapper } from "@vue/test-utils";
 
 jest.useFakeTimers();
 
 describe("Notification", () => {
+  beforeEach(() => {
+    Main.__Rewire__("notificationList", []);
+  });
+
   it("应该有类名为 wp-notification 得 div", () => {
     const wrapper = shallowMount(Notification);
     const result = wrapper.contains(".wp-notification");
@@ -133,6 +137,25 @@ describe("Notification", () => {
       it("等于 0 时，不会自动关闭", () => {
         handleDuration(0);
         expect(body.querySelector(".wp-notification")).toBeTruthy();
+      });
+    });
+
+    describe("显示的坐标", () => {
+      it("第一个显示的组件位置默认是 top: 50px, right:10px ", () => {
+        const wrapper = wrapNotify();
+        expect(wrapper.vm.position).toEqual({
+          top: "50px",
+          right: "10px"
+        });
+      });
+
+      it("同时显示两个组件时，第二个组件的位置是 top: 125px, right:10px", () => {
+        wrapNotify();
+        const wrapper2 = wrapNotify();
+        expect(wrapper2.vm.position).toEqual({
+          top: "125px",
+          right: "10px"
+        });
       });
     });
   });

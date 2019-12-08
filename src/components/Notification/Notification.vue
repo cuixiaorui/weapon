@@ -1,5 +1,5 @@
 <template>
-  <div class="wp-notification" @click="onClickHandler">
+  <div class="wp-notification" :style="styleInfo" @click="onClickHandler">
     <div class="wp-notification__title">
       {{ title }}
     </div>
@@ -43,6 +43,19 @@ export default {
       default: () => {}
     }
   },
+  data(){
+    return {
+      position:{
+        top:0,
+        right:0
+      },
+    }
+  },
+  computed: {
+    styleInfo(){
+      return Object.assign({},this.position)
+    }
+  },
   methods: {
     onCloseHandler() {
       this.onClose();
@@ -50,7 +63,8 @@ export default {
 
     onClickHandler() {
       this.onClick();
-    }
+    },
+
   }
 };
 </script>
