@@ -2,6 +2,8 @@ import Notification from "./Notification.vue";
 import Vue from "vue";
 
 let notificationList = [];
+const interval = 25;
+const initTop = 50;
 
 export function notify(options = {}) {
   const container = createContainerAndAppendToView();
@@ -75,15 +77,26 @@ function setProp(notification, key, val) {
   notification[key] = val;
 }
 
+function getHeightByElement(element) {
+  return element ? element.$el.offsetHeight : 0;
+}
+
 function updatePosition() {
-  const interval = 25;
-  const initTop = 50;
-  const elementHeight = 50;
+  const createPositionInfo = (element, index) => {
+    const height = getHeightByElement(element);
+    const top = initTop + (height + interval) * index;
+    const right = 10;
+    return {
+      top: `${top}px`,
+      right: `${right}px`
+    };
+  };
 
   notificationList.forEach((element, index) => {
-    const top = initTop + (elementHeight + interval) * index;
-    element.position.top = `${top}px`;
-    element.position.right = `10px`;
+    const preElement = notificationList[index - 1];
+    const positionInfo = createPositionInfo(preElement, index);
+    element.position.top = positionInfo.top;
+    element.position.right = positionInfo.right;
   });
 }
 

@@ -156,23 +156,32 @@ describe("Notification", () => {
         expectEqualInitPosition(wrapper);
       });
 
-      it("同时显示两个组件时，第二个组件的位置是 top: 125px, right:10px", () => {
+      it("同时显示两个组件时，第二个组件的位置是 -> 起始位置 + 第一个组件得高度 + 间隔", () => {
+        const interval = Main.__get__("interval");
+        const initTop = Main.__get__("initTop");
+        const elementHeightList = [50, 70];
+        let index = 0;
+        Main.__Rewire__("getHeightByElement", element => {
+          return element ? elementHeightList[index++] : 0;
+        });
+
         wrapNotify();
         const wrapper2 = wrapNotify();
+        const top = initTop + interval + elementHeightList[0];
         expect(wrapper2.vm.position).toEqual({
-          top: "125px",
+          top: `${top}px`,
           right: "10px"
         });
       });
 
-      it("第一个组件消失后，新创建的组件的位置应该是起始位置", () => {
+      it("创建得组件都消失后，新创建的组件的位置应该是起始位置", () => {
         wrapNotify();
         jest.runAllTimers();
         const wrapper2 = wrapNotify();
         expectEqualInitPosition(wrapper2);
       });
 
-      it("第一个组件消失后，第二个组件的位置应该是更新为第一个组件的位置", () => {
+      it("创建两个组件，当第一个组件消失后，第二个组件得位置应该更新 -> 更新为第一个组件得位置", () => {
         wrapNotify({ duration: 1000 });
         const wrapper2 = wrapNotify({ duration: 3000 });
         jest.advanceTimersByTime(2000);
