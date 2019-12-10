@@ -59,6 +59,7 @@ export default {
   methods: {
     onCloseHandler() {
       this.onClose();
+      this.$emit('close',this)
     },
 
     onClickHandler() {

@@ -24,8 +24,12 @@ let countId = 0;
 function createNotification(el) {
   const NotificationClass = Vue.extend(Notification);
   const notification = new NotificationClass({ el });
+  notification.$on("close", onCloseHandler);
   notification.id = countId++;
   return notification;
+}
+function onCloseHandler(notification) {
+  deleteNotification(notification);
 }
 
 function updateProps(notification, options) {

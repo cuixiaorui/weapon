@@ -6,6 +6,7 @@
 
 <script>
 import ButtonDemo from './show/button-demo.vue';
+import "./components/Notification/index"
 
 export default {
   name: 'app',

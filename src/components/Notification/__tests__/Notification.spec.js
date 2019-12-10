@@ -9,6 +9,10 @@ describe("Notification", () => {
     Main.__Rewire__("notificationList", []);
   });
 
+  afterEach(() => {
+    jest.runAllTimers();
+  });
+
   it("应该有类名为 wp-notification 得 div", () => {
     const wrapper = shallowMount(Notification);
     const result = wrapper.contains(".wp-notification");
@@ -50,7 +54,7 @@ describe("Notification", () => {
       expect(wrapper.contains(btnSelector)).toBe(false);
     });
 
-    it("点击关闭按钮后，应该调用传入的 onClose ", () => {
+    it("点击关闭按钮,应该调用传入的 onClose ", () => {
       const onClose = jest.fn();
       const btnSelector = ".wp-notification__close-button";
       const wrapper = shallowMount(Notification, {
@@ -65,16 +69,15 @@ describe("Notification", () => {
   });
 
   describe("notify()", () => {
+    function wrapNotify(options = {}) {
+      const notification = notify(options);
+      return createWrapper(notification);
+    }
     it("调用后会把 notification 添加到 body 内", () => {
       notify();
       const body = document.querySelector("body");
       expect(body.querySelector(".wp-notification")).toBeTruthy();
     });
-
-    function wrapNotify(options) {
-      const notification = notify(options);
-      return createWrapper(notification);
-    }
 
     it("设置 title ", () => {
       const wrapper = wrapNotify({ title: "test" });
@@ -96,12 +99,25 @@ describe("Notification", () => {
     });
 
     describe("onClose --> 关闭时的回调函数,关闭后应该调用回调函数", () => {
-      it("点击关闭按钮时调用 onClose", () => {
-        const onClose = jest.fn();
-        const wrapper = wrapNotify({ onClose });
-        const btnSelector = ".wp-notification__close-button";
-        wrapper.find(btnSelector).trigger("click");
-        expect(onClose).toBeCalledTimes(1);
+      describe("点击关闭按钮", () => {
+        it("调用 onClose", () => {
+          const onClose = jest.fn();
+          const wrapper = wrapNotify({ onClose });
+          const btnSelector = ".wp-notification__close-button";
+          wrapper.find(btnSelector).trigger("click");
+          expect(onClose).toBeCalledTimes(1);
+
+          // jest.runAllTimers();
+          // expect(onClose).toBeCalledTimes(1);
+        });
+
+        it("组件应该被删除", () => {
+          const wrapper = wrapNotify();
+          const body = document.querySelector("body");
+          const btnSelector = ".wp-notification__close-button";
+          wrapper.find(btnSelector).trigger("click");
+          expect(body.querySelector(".wp-notification")).toBeFalsy();
+        });
       });
 
       it("通过设置 duration 关闭时也会调用 onClose", () => {
