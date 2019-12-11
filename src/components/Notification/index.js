@@ -29,8 +29,7 @@ function createNotification(el) {
   return notification;
 }
 function onCloseHandler(notification) {
-  notification.onClose();
-  deleteNotification(notification);
+  handleDelete(notification);
 }
 
 function updateProps(notification, options) {
@@ -55,10 +54,7 @@ function updateProps(notification, options) {
 function setDuration(duration, notification) {
   if (duration === 0) return;
   setTimeout(() => {
-    if (isDeleted(notification)) return;
-    notification.onClose();
-    deleteNotification(notification);
-    updatePosition();
+    handleDelete(notification);
   }, duration);
 }
 
@@ -75,6 +71,12 @@ function deleteNotification(notification) {
   notification.$destroy();
 }
 
+function handleDelete(notification) {
+  if (isDeleted(notification)) return;
+  notification.onClose();
+  deleteNotification(notification);
+  updatePosition();
+}
 function removeById(id) {
   notificationList = notificationList.filter(v => v.id !== id);
 }

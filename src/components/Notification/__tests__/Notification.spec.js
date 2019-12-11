@@ -4,6 +4,11 @@ import { shallowMount, createWrapper } from "@vue/test-utils";
 
 jest.useFakeTimers();
 
+function clickCloseBtn(wrapper) {
+  const btnSelector = ".wp-notification__close-button";
+  wrapper.find(btnSelector).trigger("click");
+}
+
 describe("Notification", () => {
   beforeEach(() => {
     Main.__Rewire__("notificationList", []);
@@ -91,10 +96,6 @@ describe("Notification", () => {
     });
 
     describe("onClose --> 关闭时的回调函数,关闭后应该调用回调函数", () => {
-      function clickCloseBtn(wrapper) {
-        const btnSelector = ".wp-notification__close-button";
-        wrapper.find(btnSelector).trigger("click");
-      }
       describe("点击关闭按钮", () => {
         it("只会调用 onClose 一次", () => {
           const onClose = jest.fn();
@@ -188,11 +189,20 @@ describe("Notification", () => {
         expectEqualInitPosition(wrapper2);
       });
 
-      it("创建两个组件，当第一个组件消失后，第二个组件得位置应该更新 -> 更新为第一个组件得位置", () => {
-        wrapNotify({ duration: 1000 });
-        const wrapper2 = wrapNotify({ duration: 3000 });
-        jest.advanceTimersByTime(2000);
-        expectEqualInitPosition(wrapper2);
+      describe("创建两个组件，当第一个组件消失后，第二个组件得位置应该更新 -> 更新为第一个组件得位置", () => {
+        it("通过点击关闭按钮消失", () => {
+          const wrapper1 = wrapNotify();
+          const wrapper2 = wrapNotify();
+          clickCloseBtn(wrapper1);
+          expectEqualInitPosition(wrapper2);
+        });
+
+        it("通过触发 settimeout 消失", () => {
+          wrapNotify({ duration: 1000 });
+          const wrapper2 = wrapNotify({ duration: 3000 });
+          jest.advanceTimersByTime(2000);
+          expectEqualInitPosition(wrapper2);
+        });
       });
     });
   });
