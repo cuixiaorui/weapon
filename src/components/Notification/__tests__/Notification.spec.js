@@ -73,10 +73,15 @@ describe("Notification", () => {
       const notification = notify(options);
       return createWrapper(notification);
     }
+
+    function checkIsExistInView() {
+      const body = document.querySelector("body");
+      return expect(body.querySelector(".wp-notification"));
+    }
+
     it("调用后会把 notification 添加到 body 内", () => {
       notify();
-      const body = document.querySelector("body");
-      expect(body.querySelector(".wp-notification")).toBeTruthy();
+      checkIsExistInView().toBeTruthy();
     });
 
     it("设置 title ", () => {
@@ -99,12 +104,15 @@ describe("Notification", () => {
     });
 
     describe("onClose --> 关闭时的回调函数,关闭后应该调用回调函数", () => {
+      function clickCloseBtn(wrapper) {
+        const btnSelector = ".wp-notification__close-button";
+        wrapper.find(btnSelector).trigger("click");
+      }
       describe("点击关闭按钮", () => {
         it("调用 onClose", () => {
           const onClose = jest.fn();
           const wrapper = wrapNotify({ onClose });
-          const btnSelector = ".wp-notification__close-button";
-          wrapper.find(btnSelector).trigger("click");
+          clickCloseBtn(wrapper);
           expect(onClose).toBeCalledTimes(1);
 
           // jest.runAllTimers();
@@ -113,10 +121,8 @@ describe("Notification", () => {
 
         it("组件应该被删除", () => {
           const wrapper = wrapNotify();
-          const body = document.querySelector("body");
-          const btnSelector = ".wp-notification__close-button";
-          wrapper.find(btnSelector).trigger("click");
-          expect(body.querySelector(".wp-notification")).toBeFalsy();
+          clickCloseBtn(wrapper);
+          checkIsExistInView().toBeFalsy();
         });
       });
 
@@ -137,22 +143,20 @@ describe("Notification", () => {
     });
 
     describe("duration	延迟关闭的时间", () => {
-      let body;
       function handleDuration(duration) {
         wrapNotify({ duration });
-        body = document.querySelector("body");
-        expect(body.querySelector(".wp-notification")).toBeTruthy();
+        checkIsExistInView().toBeTruthy();
         jest.runAllTimers();
       }
 
       it("大于 0 时，到时间自动关闭", () => {
         handleDuration(1000);
-        expect(body.querySelector(".wp-notification")).toBeFalsy();
+        checkIsExistInView().toBeFalsy();
       });
 
       it("等于 0 时，不会自动关闭", () => {
         handleDuration(0);
-        expect(body.querySelector(".wp-notification")).toBeTruthy();
+        checkIsExistInView().toBeTruthy();
       });
     });
 
