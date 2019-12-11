@@ -29,6 +29,7 @@ function createNotification(el) {
   return notification;
 }
 function onCloseHandler(notification) {
+  notification.onClose();
   deleteNotification(notification);
 }
 
@@ -54,10 +55,15 @@ function updateProps(notification, options) {
 function setDuration(duration, notification) {
   if (duration === 0) return;
   setTimeout(() => {
+    if (isDeleted(notification)) return;
     notification.onClose();
     deleteNotification(notification);
     updatePosition();
   }, duration);
+}
+
+function isDeleted(notification) {
+  return !notificationList.some(n => n.id === notification.id);
 }
 
 function deleteNotification(notification) {

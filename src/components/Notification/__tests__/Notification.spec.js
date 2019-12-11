@@ -53,19 +53,6 @@ describe("Notification", () => {
       });
       expect(wrapper.contains(btnSelector)).toBe(false);
     });
-
-    it("点击关闭按钮,应该调用传入的 onClose ", () => {
-      const onClose = jest.fn();
-      const btnSelector = ".wp-notification__close-button";
-      const wrapper = shallowMount(Notification, {
-        propsData: {
-          onClose
-        }
-      });
-
-      wrapper.find(btnSelector).trigger("click");
-      expect(onClose).toBeCalledTimes(1);
-    });
   });
 
   describe("notify()", () => {
@@ -109,14 +96,14 @@ describe("Notification", () => {
         wrapper.find(btnSelector).trigger("click");
       }
       describe("点击关闭按钮", () => {
-        it("调用 onClose", () => {
+        it("只会调用 onClose 一次", () => {
           const onClose = jest.fn();
           const wrapper = wrapNotify({ onClose });
           clickCloseBtn(wrapper);
           expect(onClose).toBeCalledTimes(1);
-
-          // jest.runAllTimers();
-          // expect(onClose).toBeCalledTimes(1);
+          // 组件销毁后
+          jest.runAllTimers();
+          expect(onClose).toBeCalledTimes(1);
         });
 
         it("组件应该被删除", () => {
